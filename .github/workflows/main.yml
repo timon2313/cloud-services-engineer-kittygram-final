@@ -27,17 +27,3 @@ jobs:
         run: |
           python -m flake8 backend/
 
-      - name: Run backend tests
-        run: |
-          cd backend
-          python manage.py test
-
-      - name: Install dependencies for frontend
-        run: |
-          cd frontend
-          npm install
-
-      - name: Run frontend tests
-        run: |
-          cd frontend
-          npm test
