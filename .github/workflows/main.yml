@@ -115,7 +115,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_SECRET_KEY }}
           source: "docker-compose.production.yml"
-          target: "/home/ubuntu/kittygram/"
+          target: "/root/kittygram/"
 
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
@@ -124,7 +124,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_SECRET_KEY }}
           script: |
-            cd /home/kittygram
+            cd /root/kittygram
             echo -e "${{ secrets.ENV_CONTENT }}" > .env
             sudo docker compose -f docker-compose.production.yml pull
             sudo docker compose -f docker-compose.production.yml down
