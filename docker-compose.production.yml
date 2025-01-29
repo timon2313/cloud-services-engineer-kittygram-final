@@ -1,0 +1,38 @@
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+  postgres:
+    image: postgres:13.10
+    env_file: .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  backend:
+    image: timon2313/kittygram_backend
+    env_file: .env
+    depends_on:
+      - postgres
+    volumes:
+      - static:/backend_static
+      - media:/app/media
+
+  frontend:
+    env_file: .env
+    image: timon2313/frontend_backend
+    command: cp -r /app/build/. /frontend_static/
+    volumes:
+      - static:/frontend_static
+
+  gateway:
+    image: timon2313/kittygram_gateway
+    ports:
+      - 80:80
+    volumes:
+      - static:/static
+      - media:/media
+    depends_on:
+      - backend
+      - frontend
