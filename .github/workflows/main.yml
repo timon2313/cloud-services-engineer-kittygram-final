@@ -124,8 +124,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_SECRET_KEY }}
           script: |
-            cd /root/kittygram
-            echo -e "${{ secrets.ENV_CONTENT }}" > .env
-            sudo docker compose -f docker-compose.production.yml pull
-            sudo docker compose -f docker-compose.production.yml down
-            sudo docker compose -f docker-compose.production.yml up -d
+            cd /home/ubuntu/kittygram/ 
+            sudo docker compose -f docker-compose.yml pull
+            sudo docker compose -f docker-compose.yml down
+            sudo docker compose -f docker-compose.yml up -d
