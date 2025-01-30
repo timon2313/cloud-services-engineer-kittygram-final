@@ -125,6 +125,6 @@ jobs:
           key: ${{ secrets.SSH_SECRET_KEY }}
           script: |
             cd /root/kittygram/ 
-            sudo docker compose -f docker-compose.yml pull
-            sudo docker compose -f docker-compose.yml down
-            sudo docker compose -f docker-compose.yml up -d
+            sudo docker compose -f docker-compose.production.yml pull
+            sudo docker compose -f docker-compose.production.yml down
+            sudo docker compose -f docker-compose.production.yml up -d
