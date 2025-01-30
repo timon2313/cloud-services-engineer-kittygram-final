@@ -21,7 +21,7 @@ services:
 
   frontend:
     env_file: .env
-    image: timon2313/frontend_backend
+    image: timon2313/kittygram_frontend
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - static:/frontend_static
