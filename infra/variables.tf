@@ -38,7 +38,7 @@ variable "vm_cores" {
 
 variable "vm_memory" {
   type    = number
-  default = 4
+  default = 2
 }
 
 variable "gateway_port" {

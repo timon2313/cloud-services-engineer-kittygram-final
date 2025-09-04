@@ -89,6 +89,6 @@ resource "yandex_compute_instance" "vm" {
 
   metadata = {
     user-data = file("${path.module}/${var.cloud_init_file}")
-    # ssh-keys = "ubuntu:${file("~/.ssh/id_rsa.pub")}"
+    ssh-keys  = "ubuntu:${file(pathexpand("~/.ssh/id_ed25519.pub"))}"
   }
 }
