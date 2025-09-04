@@ -7,49 +7,61 @@ on:
         description: 'Select the Terraform action'
         required: true
         default: 'plan'
-        type: 'choice'
+        type: choice
         options:
           - plan
           - apply
-          - destroy 
+          - destroy
 
 jobs:
-  terraform:
+  tf:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    defaults:
+      run:
+        working-directory: ./infra
 
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Write SA key.json
+        run: echo "${{ secrets.YC_SA_JSON }}" > key.json
 
       - name: Terraform Init
-        working-directory: ./infra
-        run: terraform init
-        env:
-          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: |
+          terraform init \
+            -backend-config='endpoints={"s3"="https://storage.yandexcloud.net"}' \
+            -backend-config="bucket=kittygram-tfstate-04998327" \
+            -backend-config="region=ru-central1" \
+            -backend-config="key=tf-state.tfstate" \
+            -backend-config="skip_region_validation=true" \
+            -backend-config="skip_credentials_validation=true" \
+            -backend-config="skip_requesting_account_id=true" \
+            -backend-config="skip_s3_checksum=true" \
+            -backend-config="skip_metadata_api_check=true" \
+            -backend-config="access_key=${{ secrets.ACCESS_KEY }}" \
+            -backend-config="secret_key=${{ secrets.SECRET_KEY }}"
 
       - name: Terraform Plan
-        working-directory: ./infra
         if: ${{ github.event.inputs.action == 'plan' }}
-        run: terraform plan
         env:
-          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          TF_VAR_cloud_id:  ${{ secrets.YC_CLOUD_ID }}
+          TF_VAR_folder_id: ${{ secrets.YC_FOLDER_ID }}
+        run: terraform plan -var "cloud_id=$TF_VAR_cloud_id" -var "folder_id=$TF_VAR_folder_id"
 
       - name: Terraform Apply
-        working-directory: ./infra
         if: ${{ github.event.inputs.action == 'apply' }}
-        run: terraform apply -auto-approve
         env:
-          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          TF_VAR_cloud_id:  ${{ secrets.YC_CLOUD_ID }}
+          TF_VAR_folder_id: ${{ secrets.YC_FOLDER_ID }}
+        run: terraform apply -auto-approve -var "cloud_id=$TF_VAR_cloud_id" -var "folder_id=$TF_VAR_folder_id"
 
       - name: Terraform Destroy
-        working-directory: ./infra
         if: ${{ github.event.inputs.action == 'destroy' }}
-        run: terraform destroy -auto-approve
         env:
-          ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          TF_VAR_cloud_id:  ${{ secrets.YC_CLOUD_ID }}
+          TF_VAR_folder_id: ${{ secrets.YC_FOLDER_ID }}
+        run: terraform destroy -auto-approve -var "cloud_id=$TF_VAR_cloud_id" -var "folder_id=$TF_VAR_folder_id"
