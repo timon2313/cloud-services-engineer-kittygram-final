@@ -43,7 +43,7 @@ variable "vm_memory" {
 
 variable "gateway_port" {
   type    = number
-  default = 9000
+  default = 80
 }
 
 variable "cloud_init_file" {
