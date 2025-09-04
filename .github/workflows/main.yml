@@ -115,7 +115,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_SECRET_KEY }}
           source: "docker-compose.production.yml"
-          target: "/root/kittygram/"
+          target: "~/kittygram/"
 
       - name: Executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
@@ -124,7 +124,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_SECRET_KEY }}
           script: |
-            cd /root/kittygram/ 
+            cd ~/kittygram/ 
             sudo docker compose -f docker-compose.production.yml pull
             sudo docker compose -f docker-compose.production.yml down
             sudo docker compose -f docker-compose.production.yml up -d
