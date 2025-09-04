@@ -29,8 +29,18 @@ jobs:
 
       - name: Set up Yandex Cloud service account key
         working-directory: ./infra
+        env:
+          YC_KEY_JSON_B64: ${{ secrets.YC_KEY_JSON }}
         run: |
-          echo "${{ secrets.YC_KEY_JSON }}" | base64 -d > key.json
+          python - <<'PY'
+          import os, base64, json, sys
+          b64 = os.environ.get('YC_KEY_JSON_B64', '')
+          data = base64.b64decode(b64)
+          open('key.json', 'wb').write(data)
+          # проверим, что это валидный JSON
+          json.loads(data.decode('utf-8'))
+          print("key.json size:", len(data))
+          PY
           sudo apt-get update && sudo apt-get install -y jq
           jq . key.json > /dev/null
 
