@@ -3,3 +3,8 @@
 .env
 venv
 infra/key.json
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
