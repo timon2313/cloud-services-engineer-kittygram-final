@@ -14,7 +14,7 @@ on:
           - destroy
 
 jobs:
-  tf:
+  terraform:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -28,7 +28,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
 
       - name: Write SA key.json
-        run: echo "${{ secrets.YC_SA_JSON }}" > key.json
+        run: echo '${{ secrets.YC_SA_JSON_B64 }}' | base64 -d > key.json
 
       - name: Terraform Init
         run: |

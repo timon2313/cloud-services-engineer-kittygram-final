@@ -7,4 +7,4 @@ venv
 .terraform/
 crash.log
 infra/key.json
-key.json
+key.json*
