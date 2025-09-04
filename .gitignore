@@ -2,9 +2,9 @@
 .DS_Store
 .env
 venv
-infra/key.json
-.terraform/
 *.tfstate
 *.tfstate.*
-*.tfvars
-*.tfvars.json
+.terraform/
+crash.log
+infra/key.json
+key.json
