@@ -50,3 +50,7 @@ variable "cloud_init_file" {
   type    = string
   default = "cloud-init.yml"
 }
+
+variable "ssh_public_key" {
+  type = string
+}
