@@ -124,7 +124,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_SECRET_KEY }}
           script: |
-            cat <<EOF > /home/${{ secrets.SSH_USERNAME }}/kittygram/.env
+            cat <<EOF > /home/${{ secrets.SERVER_USER }}/kittygram/.env
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             POSTGRES_DB=${{ secrets.POSTGRES_DB }}
