@@ -132,7 +132,7 @@ jobs:
         with:
           host: ${{ secrets.SERVER }}
           username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PUBLIC_KEY }}
+          key: ${{ secrets.SSH_SECRET_KEY }}
           source: ".env"
           target: "./kittygram/"
 
